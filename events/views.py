@@ -68,10 +68,7 @@ def add_event(request):
         )
         new_event.save()
         messages.add_message(request, messages.SUCCESS, "You successfully added a new event: %s" % new_event.title)
-        return render(request,
-                      'events/posts/item_detail.html',
-                      {'event': new_event}
-                      )
+        return redirect('events:event_detail', new_event.id)
     else:
         return render(request, 'events/posts/add_new_event.html')
 
@@ -85,9 +82,9 @@ def edit_event(request, event_id):
         event.time = request.POST.get('time')
         event.description = request.POST.get('description')
         event.save()
-        messages.add_message(request, messages.SUCCESS, "You successfully edit the event: %s" % event.title)
+        messages.add_message(request, messages.INFO, "You successfully edit the event: %s" % event.title)
 
-        return render(request, "events/posts/item_detail.html", {'event': event})
+        return redirect('events:event_detail', event_id)
     else:
         return render(request,
                       "events/posts/add_new_event.html", {'event': event})
@@ -120,6 +117,7 @@ def delete_event(request):
         event_id = request.POST.get('event_id')
         event = Event.objects.get(pk=event_id)
         event.delete()
+        messages.add_message(request, messages.WARNING, "You successfully delete the event: %s" % event.title)
         redirect('events:events_list')
     return redirect('events:events_list')
 
