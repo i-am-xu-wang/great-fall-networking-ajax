@@ -1,28 +1,4 @@
 $(document).ready(function () {
-    //event delegation implementation for share/like button
-    // $('.eventButton').on('click', 'img', function () {
-    //     event.preventDefault();
-    //     var target = event.target;
-    //     var eventElement;
-    //     switch (target.className) {
-    //         case 'shareButton':
-    //             eventElement = $(this).parent().siblings('ul.eventInfo').children('li.attendees').children('span.shareNumber');
-    //             break;
-    //         case 'likeButton':
-    //             eventElement = $(this).parent().siblings('ul.eventInfo').children('li.attendees').children('span.likeNumber');
-    //             break;
-    //     }
-    //     var eventNumber = parseInt($(eventElement).text());
-    //     eventNumber++;
-    //     console.log(eventNumber);
-    //     $(eventElement).text(eventNumber);
-    //     var successMsg = $('<p class = "click-success">Click successful</p>');
-    //     // $(this).parent().append(successMsg);
-    //     $(successMsg).appendTo($(this).parent()).fadeOut('slow', function () {
-    //         $(this).remove();
-    //     })
-    //
-    // });
     $('.eventButton').on('click', 'img', function () {
         var event_id = $(this).parent().attr('data-event-id');
         var interaction_url = $(this).parent().attr('data-ajax-url');
@@ -76,54 +52,116 @@ $(document).ready(function () {
             })
     });
 
-    //the second user interaction use mouseover/mouseout events.
+    // the first ajax user interaction use mouseover/mouseout events.
+    // retrieve the user data from user model in database
     // add new element of user information in the feeds-additional_page.html
-    var userInfo;
+     var userInfo;
     $('.userImage img').mouseover(function () {
-        event.preventDefault();
-        var target = event.target;
-        var eventElement;
-        if (target.className == "heartsQueen") {
-            userInfo = $('<ul class = "popInfo">\n' +
-                '                    <li>Age: 27</li>\n' +
-                '                    <li>Gender: Female</li>\n' +
-                '                    <li>Interested Group: Bird Watchers</li>\n' +
-                '                    <li>Self-Intro: I am Hearts Queen. Nice to meet you</li>\n' +
-                '                </ul>')
-        } else {
-            userInfo = $("<ul class = \"popInfo\">\n" +
+         var user_id = $(this).parent().attr('data-user-id');
+         var user_url = $(this).parent().attr('data-ajax-url');
+         $.ajax({
+            url: user_url,
+            data: {
+                user_id: user_id,
+            },
+            // Whether this is a POST or GET request
+            type: "POST",
+            // The type of data we expect back
+            dataType: "json",
+            headers: {'X-CSRFToken': csrftoken},
+            context: this
+        })
+            .done(function (json) {
+                if (json.success === 'success') {
+                    if(json.name === "Anonymous User"){
+                         userInfo = $("<ul class = \"popInfo\">\n" +
                 "                    <li>This user choose not to declare their information</li>\n" +
                 "                </ul>")
-        }
-        userInfoElement = $(this).parent().siblings('div.userInfo');
-        $(userInfo).appendTo(userInfoElement).show();
+                    }
+                    else{
+                         userInfo = $('<ul class = "popInfo">\n' +
+                '                    <li>Age: <span id = "age">' + json.age + '</span></li>\n' +
+                '                    <li>Gender: <span id = "gender">'+ json.gender + '</span></li>\n' +
+                '                    <li>Interested Group: <span class = "group">'+ json.group+ '</span></li>\n' +
+                '                    <li>Self-Intro:  <span class = "intro">'+ json.intro+ '</span></li>\n' +
+                '                </ul>')
+                    }
+                    var userInfoElement = $(this).parent().siblings('div.userInfo');
+                    $(userInfo).appendTo(userInfoElement).show();
+                } else {
+                    alert("Error: " + json.error)
+                }
+            })
+            .fail(function (xhr, status, errorThrown) {
+                alert("Sorry, there was a problem!");
+                console.log("Error: " + errorThrown);
+                console.log("Status: " + status);
+                console.dir(xhr);
+                console.log(user_id)
+            })
     });
+
     $('.userImage img').mouseout(function () {
         $(userInfo).hide();
     });
 
 
-    // register and unregister button, the number of attendee will add/minus respectively
+    // the second ajax request that modify the attendees value
+    // click the register button will increment number of attendees by one,
+    // also disable the register button from "register" to "unregister"
     $('.register').click(function () {
-        attendeeElement = $(this).siblings('ul.eventInfo').children('li.attendees').children('span.attendeesNumber');
-        var attendeeNumber = parseInt($(attendeeElement).text());
-        console.log($(this).text());
-        if ($(this).text() == "Register") {
-            $(this).text("Unregister");
-            attendeeNumber++;
-        } else {
-            $(this).text("Register");
-            attendeeNumber--;
-        }
-        $(attendeeElement).text(attendeeNumber);
+        var register_url = $(this).attr('data-ajax-url');
+        var event_id = $(this).siblings('.eventButton').attr('data-event-id');
+        console.log(event_id)
+        var buttonText = $(this).text();
+         $.ajax({
+            url: register_url,
+            data: {
+                event_id: event_id,
+                button_text:buttonText
+            },
+            // Whether this is a POST or GET request
+            type: "POST",
+            // The type of data we expect back
+            dataType: "json",
+            headers: {'X-CSRFToken': csrftoken},
+            context: this
+        })
+            .done(function (json) {
+                if (json.success === 'success') {
+                     $(this).text(json.button_name);
+                      attendeeElement = $(this).siblings('ul.eventInfo').children('li.attendees').children('span.attendeesNumber');
+                      $(attendeeElement).text(json.attendees);
+                    var successMsg = $('<p class = "click-success">' + buttonText +' &#160 successful</p>');
+                    $(this).parent().append(successMsg);
+                    $(successMsg).appendTo($(this).parent()).fadeOut('slow', function () {
+                        $(this).remove();
+                    })
+                } else {
+                    alert("Error: " + json.error)
+                }
+            })
+            .fail(function (xhr, status, errorThrown) {
+                alert("Sorry, there was a problem!");
+                console.log("Error: " + errorThrown);
+                console.log("Status: " + status);
+                console.dir(xhr);
+                console.log(event_id)
+            })
     });
 
+
+
+
+
+
+
+
+
+    checkQueryString();
     $("#delete").click(function () {
         return confirm("Do you want to delete");
     });
-
-    checkQueryString();
-
 
 });
 

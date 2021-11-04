@@ -1,7 +1,7 @@
 from django.contrib import messages
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
-from .models import Event, regular_user, admin_user
+from .models import Event, User, regular_user, admin_user
 
 
 # Create your views here.
@@ -45,8 +45,10 @@ def search_result(request):
 
 
 def feed_page(request):
+    users = User.objects.all()
     return render(request,
                   "events/posts/feeds-additional_page.html",
+                  {"users": users}
                   )
 
 
@@ -136,3 +138,43 @@ def logout(request):
     del request.session['username']
     del request.session['role']
     return redirect('events:login')
+
+
+def user_info_interaction(request):
+    is_ajax = request.headers.get('x-requested-with') == 'XMLHttpRequest'
+    if is_ajax and request.method == "POST":
+        user_id = request.POST.get('user_id')
+        print(user_id)
+        try:
+            user = User.objects.get(pk=user_id)
+            return JsonResponse(
+                {'success': 'success', 'name': user.title, 'age': user.age,
+                 'gender': user.gender, 'group': user.group, 'intro': user.intro},
+                status=200)
+        except User.DoesNotExist:
+            return JsonResponse({'error': 'No User profile found with that id.'}, status=200)
+    else:
+        return JsonResponse({'error': 'Invalid Ajax Request'}, status=400)
+
+
+def event_register_interaction(request):
+    is_ajax = request.headers.get('x-requested-with') == 'XMLHttpRequest'
+    if is_ajax and request.method == "POST":
+        event_id = request.POST.get('event_id')
+        button_text = request.POST.get('button_text')
+        try:
+            event = Event.objects.get(pk=event_id)
+            if button_text == "Register":
+                event.attendees += 1
+                button_name = "Unregister"
+            else:
+                event.attendees -= 1
+                button_name = "Register"
+            event.save()
+            return JsonResponse(
+                {'success': 'success', 'attendees': event.attendees, 'button_name': button_name},
+                status=200)
+        except Event.DoesNotExist:
+            return JsonResponse({'error': 'No Event found with that id.'}, status=200)
+    else:
+        return JsonResponse({'error': 'Invalid Ajax Request'}, status=400)
