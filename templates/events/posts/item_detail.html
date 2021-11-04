@@ -1,0 +1,136 @@
+{% extends "events/base.html" %}
+{% block page-title %}Event Detail{% endblock %}
+{% load static %}
+{% block detailContent %}
+    <link href="{% static "css/item_with_details.css" %}" rel="stylesheet">
+    <section id="mainContent">
+        <section id="eventBlock">
+            <div id="eventPart1">
+                <div id="eventImageInEventPage">
+                    <a href="#">
+                        <img alt="bird watchers"
+                             src="{% static event.image %}">
+                    </a>
+                </div>
+                <div id="eventInfoAndButton">
+                    <ul class="eventInfo">
+                        <li class="eventTitle">{{ event.title }}</li>
+                        <li class="eventLocation">{{ event.location }}</li>
+                        <li class="eventTime">{{ event.date }}</li>
+                        <li class="eventTime">{{ event.time }}</li>
+                        <li class="organizer"> Organized by: {{ event.organizer }}</li>
+                        <li class="dateCreated">Date Posted: {{ event.created_date }}</li>
+                        <li class="attendees">
+                            <span class="attendeesNumber">{{ event.attendees }}</span>
+                            &nbsp;attendees
+                            <span class="likeNumber">{{ event.like_number }}</span>
+                            &nbsp;likes
+                            <span class="shareNumber">{{ event.share_number }}</span>
+                            &nbsp;shares
+                        <li>
+                    </ul>
+                    {% if request.session.username %}
+                        <button class="register">Register</button>
+                        <button><a href="{% url "events:edit_event" event.id %}">Edit</a></button>
+                        {% if request.session.username == 'admin' %}
+                            <form id="delete" name="delete-event" action="{% url "events:events_list" %}" method="POST">
+                                {% csrf_token %}
+                                <input type="hidden" name="event_id" value="{{ event.id }}">
+                                <button class="delete">Delete</button>
+                            </form>
+                        {% endif %}
+                        <div class="eventButton" data-event-id="{{ event.id }}"
+                             data-ajax-url="{% url "events:event_interaction" %}">
+                            <img class="shareButton" alt="share-icon"
+                                 src="{% static "img/site/share-icon.png" %}">
+                            <img class="likeButton" alt="like-icon"
+                                 src="{% static "img/site/like-icon.png" %}">
+                        </div>
+                    {% endif %}
+
+                </div>
+            </div>
+            </div>
+            <div id="eventDescription">
+                <h5>About Bird Watchers</h5>
+                <div id="description">
+                    {{ event.description }}
+                </div>
+            </div>
+        </section>
+
+        <section id="attendees">
+            <h5>Attendees</h5>
+            <div class="attendeeBlock">
+                <a class="attendImage" href="#">
+                    <img alt="The Mad Hatter"
+                         src="{% static "img/profile/the-mad-hatter.jpeg" %}">
+                </a>
+                <p>The Mad Hatter</p>
+            </div>
+            <div class="attendeeBlock">
+                <a class="attendImage" href="#">
+                    <img alt="Caterpillar"
+                         src="{% static "img/profile/caterpillar.png" %}">
+                </a>
+                <p>Caterpillar</p>
+            </div>
+            <div class="attendeeBlock">
+                <a class="attendImage" href="#">
+                    <img alt="White Rabbit"
+                         src="{% static "img/profile/white-rabbit.jpg" %}">
+                </a>
+                <p>White Rabbit</p>
+            </div>
+
+            <div class="attendeeBlock">
+                <a class="attendImage" href="#">
+                    <img alt="dodo"
+                         src="{% static "img/profile/dodo.jpg" %}">
+                </a>
+                <p>Dodo</p>
+            </div>
+            <div class="attendeeBlock">
+                <a class="attendImage" href="#">
+                    <img alt="Mock Turtle"
+                         src="{% static "img/profile/mock-turtle.jpg" %}">
+                </a>
+                <p>Mock Turtle</p>
+            </div>
+            <div class="attendeeBlock">
+                <a class="attendImage" href="#">
+                    <img alt="Cheshire Cat"
+                         src="{% static "img/profile/cheshire-cat.jpg" %}">
+                </a>
+                <p>Cheshire Cat</p>
+            </div>
+            <div class="attendeeBlock">
+                <a class="attendImage" href="#">
+                    <img alt="MarchHare"
+                         src="{% static "img/profile/march-hare.png" %}">
+                </a>
+                <p>MarchHare</p>
+            </div>
+        </section>
+    </section>
+{% endblock %}
+
+{% block detailContentRecentPhotos %}
+    <section id="recentPhotos">
+        <h5>Recent Photos From this Event</h5>
+        <div id="recentPhotosBlock">
+            <a class="feedImage" href="#">
+                <img alt="feed1"
+                     src="{% static "img/feed/season-feed1.png" %}">
+            </a>
+            <a class="feedImage" href="#">
+                <img alt="feed2"
+                     src="{% static "img/feed/season-feed2.jpg" %}">
+            </a>
+            <a class="feedImage" href="#">
+                <img alt="feed3"
+                     src="{% static "img/feed/season-feed3.jpg" %}">
+            </a>
+        </div>
+    </section>
+{% endblock %}

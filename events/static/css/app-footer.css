@@ -1,0 +1,55 @@
+/*this is for footer style*/
+footer {
+    height: 150px;
+    background: white;
+    color: black;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+    border-top-style: groove;
+    border-color: whitesmoke;
+    border-width: 2px;
+}
+
+#leftFooter {
+    width: 250px;
+    text-align: left;
+    margin-left: 30px;
+}
+
+#leftFooter div {
+    color: black;
+    font-size: large;
+}
+
+#rightFooter {
+    text-align: right;
+    margin-right: 32px;
+    display: flex;
+    flex-direction: column;
+    margin-top: 2%;
+}
+
+#midFooter {
+    float: left;
+    align-content: space-between;
+
+}
+
+#midFooter ul li a {
+    clear: left;
+    list-style-type: none;
+    overflow: hidden;
+}
+
+#midFooter ul li {
+    float: left;
+    display: table-cell;
+    border-right: solid grey 2px;
+    padding: 7px;
+    align-self: center;
+}
+
+#midFooter ul li:last-child {
+    border: 0;
+}

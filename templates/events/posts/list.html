@@ -1,0 +1,60 @@
+{% extends "events/base.html" %}
+{% block page-title %}List of Events {% endblock %}
+{% load static %}
+
+{% block side-tabs %}
+    <link href="{% static "css/listing_item_page.css" %}" rel="stylesheet">
+     <script src="{% static "js/list.js" %}"></script>
+    <ul id="side-tabs"  data-ajax-url="{% url "events:events_list" %}">
+        <li><strong>Sorted By:</strong></li>
+        <li><a href="{% url "events:events_list" %}" class="date">Date</a></li>
+        <li><a href="{% url "events:events_list" %}" class="attendees">Number of Attendees</a></li>
+        <li><a class="like_number">Number of Likes</a></li>
+        <li><a class="share_number">Number of Shares</a></li>
+    </ul>
+{% endblock %}
+{% block contentForList %}
+
+    <link href="{% static "css/listing_item_page.css" %}" rel="stylesheet">
+    <ul id="eventBoxes">
+        {% for event in events %}
+
+            <li class="eventBlock">
+                <div class="eventImage">
+                    <a href="{% url "events:event_detail" event.id %}">
+                        <img alt="event image"
+                             src="{% static event.image %}">
+                    </a>
+                </div>
+                <ul class="eventInfo">
+                    <li class="eventTitle">
+                        <a href="{% url "events:event_detail" event.id %}">{{ event.title }}</a>
+                    </li>
+                    <li class="eventLocation">{{ event.location }}</li>
+                    <li class="eventTime">{{ event.date }}</li>
+                    <li class="eventTime">{{ event.time }}</li>
+                    <li class="attendees">
+                        <span class="attendeesNumber">{{ event.attendees }}</span>
+                        &nbsp;attendees
+                        <span class="likeNumber">{{ event.like_number }}</span>
+                        &nbsp;likes
+                        <span class="shareNumber">{{ event.share_number }}</span>
+                        &nbsp;shares
+                    </li>
+                </ul>
+                {% if request.session.username %}
+                    <div class="eventButton" data-event-id="{{ event.id }}"
+                         data-ajax-url="{% url "events:event_interaction" %}">
+                        <img class="shareButton" alt="share-icon"
+                             src="{% static "img/site/share-icon.png" %}">
+                        <img class="likeButton" alt="like-icon"
+                             src="{% static "img/site/like-icon.png" %}">
+                    </div>
+                {% endif %}
+            </li>
+             {% empty %}
+            <H2>No events available. Try to add a new one yourself!</H2>
+        {% endfor %}
+    </ul>
+{% endblock %}
+

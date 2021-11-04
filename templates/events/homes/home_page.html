@@ -1,0 +1,116 @@
+{% extends "events/base.html" %}
+{% block page-title %}Home without login{% endblock %}
+{% load static %}
+{% block content %}
+
+    {% if request.session.username %}
+        <link href="{% static "css/index.css" %}" rel="stylesheet">
+        <section id="homeBoxes">
+            <h1>Upcoming Events For You</h1>
+            <div id="selectedEventForUsers">
+                <div id="eventImage">
+                    <img alt="bird watchers"
+                         src="{% static event.image %}">
+                </div>
+                <div id="eventInfoAndButton">
+                    <ul class="eventInfo">
+                        <li class="eventTitle">{{ event.title }}</li>
+                        <li class="eventLocation">{{ event.location }}</li>
+                        <li class="eventTime">{{ event.date }}</li>
+                        <li class="eventTime">{{ event.time }}</li>
+                        <li class="attendees">
+                            <span class="attendeesNumber">{{ event.attendees }}</span>
+                            &nbsp;attendees
+                            <span class="likeNumber">{{ event.like_number }}</span>
+                            &nbsp;likes
+                            <span class="shareNumber">{{ event.share_number }}</span>
+                            &nbsp;shares
+                        <li>
+                    </ul>
+                    <button class="register">Register</button>
+                    {% if request.session.username %}
+                        <div class="eventButton" data-event-id="{{ event.id }}"
+                             data-ajax-url="{% url "events:event_interaction" %}">
+                            <img class="shareButton" alt="share-icon"
+                                 src="{% static "img/site/share-icon.png" %}">
+                            <img class="likeButton" alt="like-icon"
+                                 src="{% static "img/site/like-icon.png" %}">
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            <h1>Recent Updates in Groups</h1>
+            <div id="selectedGroupForUsers">
+                <h3>New Feeds</h3>
+                <div id="feedInHomePage">
+                    <ul id=feedImagesInHome>
+                        <li class="feedImage">
+                            <a href="#">
+                                <img alt="feed1"
+                                     src="{% static "img/feed/season-feed1.png" %}">
+                            </a>
+                        </li>
+                        <li class="feedImage">
+                            <a href="#">
+                                <img alt="feed2"
+                                     src="{% static "img/feed/season-feed2.jpg" %}">
+                            </a>
+                        </li>
+                        <li class="feedImage">
+                            <a href="#">
+                                <img alt="feed3"
+                                     src="{% static "img/feed/season-feed3.jpg" %}">
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <h3>New Posts</h3>
+                <div id="postInHomePage">
+                    <div class="userImage">
+                        <a href="#">
+                            <img alt="anonymous-user"
+                                 src="{% static "img/site/anonymous-user.png" %}">
+                        </a>
+                        <p>Anonymous User</p>
+                    </div>
+                    <h4>Where is the best spot for picnic in the
+                        Virginia side?</h4>
+                    <div class="postInfo">
+                        <div>view 22</div>
+                        <div>replies 2</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    {% else %}
+        <link href="{% static "css/home_without_login.css" %}" rel="stylesheet">
+        <h1> Register Account Today to Find Out More!</h1>
+        <ul id="feature-tab">
+            <li><a class="selected"> ★ Featured Event</a></li>
+            <li><a href="#feed"> ★ Featured Feed</a></li>
+            <li><a href="#groups"> ★ Featured Group</a></li>
+        </ul>
+        <div id="homeBoxes">
+            <div id="homePageImage">
+                <img alt="bird watchers" width="300" height="300"
+                     src="{% static event.image %}">
+            </div>
+            <div id="eventInfoAndButton">
+                <ul class="eventInfo">
+                    <li class="eventTitle">{{ event.title }}</li>
+                    <li class="eventLocation">{{ event.location }}</li>
+                    <li class="eventTime">{{ event.date }}</li>
+                    <li class="eventTime">{{ event.time }}</li>
+                    <li class="attendees">
+                        <span class="attendeesNumber">{{ event.attendees }}</span>
+                        &nbsp;attendees
+                        <span class="likeNumber">{{ event.like_number }}</span>
+                        &nbsp;likes
+                        <span class="shareNumber">{{ event.share_number }}</span>
+                        &nbsp;shares
+                    <li>
+                </ul>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,50 @@
+{% extends "events/base.html" %}
+{% block page-title %}Add a new event{% endblock %}
+{% load static %}
+{% block content %}
+    <link type="text/css" href="{% static "css/add_new_event.css" %}" rel="stylesheet">
+    {% if request.session.username %}
+        <html lang="en">
+        <head>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <title>jQuery UI Datepicker - Default functionality</title>
+            <link rel="stylesheet" href="//code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
+            <script src="{% static "js/jquery-3.6.0.min.js" %}"></script>
+            <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
+            <script>
+                $(function () {
+                    $("#datepicker").datepicker();
+                });
+            </script>
+        </head>
+        <body>
+        <form id="createEvent" name="create-event" data-event-id="{{ event.id }}"
+              data-ajax-url="{% url "events:event_interaction" %}"
+              action="{% url "events:add_event" %}" method="POST" >
+            {% csrf_token %}
+            <p class="eventTitle">
+             <strong>Title:</strong>
+             <input type="text" id="eventTitleInput" name="title" value="{{ event.title }}" required>
+            </p>
+            <p class="eventLocation">
+                <strong>Location:</strong>
+                 <input type="text" id="eventLocationInput" name="location" value="{{ event.location }}" required>
+            </p>
+            <p><strong>Date:</strong> <input type="text" name="date" id="datepicker" value="{{ event.date}}"></p>
+            <p><strong>Time:</strong> <input type="text" name = "time" value="{{ event.time }}"> <small id ="format">(Following Format: 10:00 AM)</small></p>
+
+
+            <div class="eventDescription">
+                <strong>Event Description:</strong>
+            </div>
+            <textarea id="eventDescriptionInput" name="description">{{ event.description }}</textarea>
+            <input  id="submitButton" type="submit" value="submit">
+        </form>
+
+    {% else %}
+        <h3> Log in to create an Event!</h3>
+    {% endif %}
+{% endblock %}
+</body>
+</html>

@@ -1,0 +1,9 @@
+{% extends "events/base.html" %}
+{% block page-title %}Search Result Page {% endblock %}
+{% load static %}
+
+{% block content %}
+    <link href="{% static "css/search_result.css" %}" rel="stylesheet">
+    <h2 id="search-page-title">Search Results for:</h2>
+    <div id="search-result"></div>
+{% endblock %}

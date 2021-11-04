@@ -1,0 +1,72 @@
+{% extends "events/base.html" %}
+{% block page-title %}Feeds of GreatFall networking{% endblock %}
+{% load static %}
+
+{% block content %}
+    <link href="{% static "css/feed_page.css" %}" rel="stylesheet">
+    <section id="postsArea">
+        <div class="postBlock">
+            <div class="userImage">
+                <img class="heartsQueen" alt="knave-of-hearts"
+                     src="{% static "img/site/knave-of-hearts.png" %}">
+                <p>Hearts Queen</p>
+            </div>
+            <div class="userInfo">
+            </div>
+            <h4><a href="#"> Where is the best spot for picnic in the
+                Virginia side? </a></h4>
+            <div class="postInfo">
+                <div>view 22</div>
+                <div>replies 2</div>
+            </div>
+        </div>
+
+        <div class="postBlock">
+            <div class="userImage">
+                <img alt="cheshire-cat"
+                     src="{% static "img/site/cheshire-cat.jpg" %}">
+                <p>Cheshire Cat</p>
+            </div>
+            <div class="userInfo">
+            </div>
+            <h4><a href="#"> A lovely view from the Maryland side </a></h4>
+            <div class="postInfo">
+                <div>view 122</div>
+                <div>replies 34</div>
+            </div>
+        </div>
+
+        <div class="postBlock">
+            <div class="userImage">
+                <img alt="anonymous-user"
+                     src="{% static "img/site/anonymous-user.png" %}">
+                <p>Anonymous User</p>
+            </div>
+            <div class="userInfo">
+            </div>
+            <h4><a href="#"> Which one is the easiest trail in the
+                Virginia side? </a></h4>
+            <div class="postInfo">
+                <div>view 22</div>
+                <div>replies 2</div>
+            </div>
+        </div>
+
+    </section>
+{#    <!--  user editor area -->#}
+{#    <section id="textEditorArea">#}
+{#        <div class="yourImage">#}
+{#            <a href="#">#}
+{#                <img alt="yourImage"#}
+{#                     src="{% static "img/site/alice.png" %}">#}
+{#            </a>#}
+{#            <p>Alice</p>#}
+{#        </div>#}
+{#        <textarea cols="100" id="textEditor" rows="12">#}
+{#                Write your own post...#}
+{#            </textarea>#}
+{#        <button>#}
+{#            Post#}
+{#        </button>#}
+{#    </section>#}
+{% endblock %}

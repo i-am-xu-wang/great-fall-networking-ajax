@@ -1,0 +1,115 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<!--This page is the event page of the website-->
+<head>
+    <title>List item Page | {% block page-title %} {% endblock %}</title>
+    <script src="{% static "js/jquery-3.6.0.min.js" %}"></script>
+    <script src="{% static "js/script.js" %}"></script>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1, minimum-scale=1"
+          name="viewport"/>
+    <meta content="The list item page for GreatFalls Networking" name="description">
+    <link href="{% static "css/app.css" %}" rel="stylesheet">
+    <link href="{% static "css/app_header_without_login.css" %}" rel="stylesheet">
+    <link href="{% static "css/app-footer.css" %}" rel="stylesheet">
+
+</head>
+<body>
+<header>
+    <div id="subHeader">
+        <div id="leftHeader">
+            <div id="logo">
+                <a href="{% url "index" %}">
+                    <img alt="GreatFalls Logo" height="150"
+                         src="{% static "img/site/logo.png" %}" width="300"/>
+                </a>
+            </div>
+        </div>
+        <div id="midHeader">
+            <a href="{% url "index" %}">
+                GreatFalls Networking
+            </a>
+            <form action="{% url 'events:search_result' %}" method="get" class="searchForm">
+                <input id="searchBar" name="search-topics" placeholder=" Any topic interested?"
+                       type="text">
+
+                <input alt="Search Icon" height="35"
+                       id="searchIcon" name="submit" src="{% static "img/site/search-icon.png" %}"
+                       type="image"
+                       width="35"/>
+            </form>
+        </div>
+        <div id="rightHeader">
+            {% if request.session.username %}
+                <form id="login-box">
+                    <p>Logged in as <strong>{{ request.session.username }}</strong> |
+                        <a href="{% url 'events:logout' %}"> Log out</a></p>
+                </form>
+            {% else %}
+                <form id="login-box" action="{% url "events:login" %}" method="POST">
+                    {% csrf_token %}
+                    <input name="username" placeholder="Username" type="text">
+                    <input name="pw" placeholder="Password" type="password">
+                    <input name="submit" type="submit" value="Log in"> or <a
+                        href="#">Register</a>
+                </form>
+            {% endif %}
+        </div>
+    </div>
+    <ul id="menu">
+        <li><a href="{% url "events:events_list" %}">Events</a></li>
+        <li><a href="{% url "events:feed_page" %}">Feed</a></li>
+        <li><a href="{% url "events:add_event" %}">Create Events</a></li>
+        <li><a href="#covid19">Covid-19</a></li>
+        <li><a href="#contact">Contact Us</a></li>
+    </ul>
+</header>
+<main>
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    <!-- main content of list item page-->
+    {% block side-tabs %}{% endblock %}
+    <!--event block area. There are three event blocks in the page-->
+    {% block contentForList %}{% endblock %}
+    <!--main content for item detail page-->
+    {% block detailContent %}{% endblock %}
+    {% block detailContentRecentPhotos %}{% endblock %}
+    <!-- main content of other pages-->
+    {% block content %}{% endblock %}
+
+</main>
+
+<footer>
+    <div id="leftFooter">
+        <p><b> Stay Connected </b></p>
+        Keep up on newest special offers and events
+        <div class="horizontal">
+            <a href="#"><img alt="social media"
+                             height="30"
+                             src="{% static "img/site/social-media-icon.png" %}"
+                             width="150"></a>
+        </div>
+    </div>
+    <div id="midFooter">
+        <ul>
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Contact Us</a></li>
+            <li><a href="#">Directions</a></li>
+            <li><a href="#">Blog</a></li>
+        </ul>
+    </div>
+    <div id="rightFooter">
+        <div class="flexItem">
+            &copy; 2021 Great Falls Networking
+        </div>
+    </div>
+</footer>
+</body>
+
+</html>
