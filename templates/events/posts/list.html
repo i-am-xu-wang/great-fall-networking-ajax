@@ -4,10 +4,9 @@
 
 {% block side-tabs %}
     <link href="{% static "css/listing_item_page.css" %}" rel="stylesheet">
-     <script src="{% static "js/list.js" %}"></script>
         <ul id="side-tabs">
         <li><strong>Sorted By:</strong></li>
-        <li><a href="{% url "events:sort_events" "-date" %}" class = "selected">Date</a></li>
+        <li><a href="{% url "events:sort_events" "-date" %}">Date</a></li>
         <li><a href="{% url "events:sort_events" "-attendees" %}">Number of Attendees</a></li>
         <li><a href="{% url "events:sort_events" "-like_number" %}">Number of Likes</a></li>
         <li><a href="{% url "events:sort_events" "-share_number" %}">Number of Shares</a></li>

@@ -16,6 +16,7 @@ def events_list(request):
 
 def sort_list(request, option):
     events = Event.objects.all().order_by(option)
+    # events = []
     return render(request,
                   "events/posts/list.html",
                   {"events": events}
