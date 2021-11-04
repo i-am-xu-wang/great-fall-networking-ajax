@@ -6,24 +6,20 @@ from .models import Event, regular_user, admin_user
 
 # Create your views here.
 def events_list(request):
-    is_ajax = request.headers.get('x-requested-with') == 'XMLHttpRequest'
-    if is_ajax and request.method == "POST":
-        button_name = request.POST.get('button_name')
-        events = Event.objects.all().order_by(button_name)
-    else:
-        events = Event.objects.all().order_by('date')
-        # events = []
+    events = Event.objects.all().order_by('date')
+    # events = []
     return render(request,
                   "events/posts/list.html",
                   {"events": events}
                   )
 
 
-#
-# def sort_events(request):
-#
-#     else:
-#         return JsonResponse({'error': 'Invalid Ajax Request'}, status=400)
+def sort_list(request, option):
+    events = Event.objects.all().order_by(option)
+    return render(request,
+                  "events/posts/list.html",
+                  {"events": events}
+                  )
 
 
 def event_detail(request, event_id):
@@ -117,6 +113,15 @@ def event_button_interaction(request):
             return JsonResponse({'error': 'No Event found with that id.'}, status=200)
     else:
         return JsonResponse({'error': 'Invalid Ajax Request'}, status=400)
+
+
+def delete_event(request):
+    if request.method == 'POST':
+        event_id = request.POST.get('event_id')
+        event = Event.objects.get(pk=event_id)
+        event.delete()
+        redirect('events:events_list')
+    return redirect('events:events_list')
 
 
 def login(request):

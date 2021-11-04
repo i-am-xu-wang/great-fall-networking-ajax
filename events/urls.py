@@ -13,4 +13,6 @@ urlpatterns = [
     path('feed', views.feed_page, name='feed_page'),
     path('<int:event_id>/edit', views.edit_event, name='edit_event'),
     path('event/interation', views.event_button_interaction, name='event_interaction'),
+    path('sort/<str:option>', views.sort_list, name='sort_events'),
+    path('delete', views.delete_event, name='delete_event'),
 ]

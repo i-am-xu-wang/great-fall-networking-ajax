@@ -33,7 +33,7 @@
                         <button class="register">Register</button>
                         <button><a href="{% url "events:edit_event" event.id %}">Edit</a></button>
                         {% if request.session.username == 'admin' %}
-                            <form id="delete" name="delete-event" action="{% url "events:events_list" %}" method="POST">
+                            <form id="delete" name="delete-event" action="{% url "events:delete_event"%}" method="POST">
                                 {% csrf_token %}
                                 <input type="hidden" name="event_id" value="{{ event.id }}">
                                 <button class="delete">Delete</button>
