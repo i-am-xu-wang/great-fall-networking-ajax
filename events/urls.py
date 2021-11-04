@@ -11,7 +11,6 @@ urlpatterns = [
     path('<int:event_id>', views.event_detail, name='event_detail'),
     path('add', views.add_event, name='add_event'),
     path('feed', views.feed_page, name='feed_page'),
-    path('<int:event_id>/edit', views.get_edit_event, name='edit_event'),
-    # path('<int:event_id>/edited', views.post_edited_event, name='edited_event'),
+    path('<int:event_id>/edit', views.edit_event, name='edit_event'),
     path('event/interation', views.event_button_interaction, name='event_interaction'),
 ]

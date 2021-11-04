@@ -80,31 +80,21 @@ def add_event(request):
         return render(request, 'events/posts/add_new_event.html')
 
 
-def get_edit_event(request, event_id):
+def edit_event(request, event_id):
     event = Event.objects.get(pk=event_id)
-    return render(request,
-                  "events/posts/add_new_event.html",
-                  {"event": event}
-                  )
+    if request.method == 'POST':
+        event.title = request.POST.get('title')
+        event.location = request.POST.get('location')
+        event.date = request.POST.get('date')
+        event.time = request.POST.get('time')
+        event.description = request.POST.get('description')
+        event.save()
+        messages.add_message(request, messages.SUCCESS, "You successfully edit the event: %s" % event.title)
 
-
-# def post_edited_event(request, event_id):
-#     event = Event.objects.get(pk=event_id)
-#     if request.method == 'POST':
-#         event.title = request.POST.get('title')
-#         event.location = request.POST.get('location')
-#         event.date = request.POST.get('date')
-#         event.time = request.POST.get('time')
-#         event.description = request.POST.get('description')
-#         event.save()
-#         messages.add_message(request, messages.SUCCESS, "You successfully edit the event: %s" % event.title)
-#         return render(request,
-#                       'events/posts/item_detail.html',
-#                       {'event': event}
-#                       )
-#     else:
-#         return render(request,
-#                       "events/posts/add_new_event.html", {"event": event})
+        return render(request, "events/posts/item_detail.html", {'event': event})
+    else:
+        return render(request,
+                      "events/posts/add_new_event.html", {'event': event})
 
 
 def event_button_interaction(request):
