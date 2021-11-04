@@ -5,20 +5,18 @@
 {% block side-tabs %}
     <link href="{% static "css/listing_item_page.css" %}" rel="stylesheet">
      <script src="{% static "js/list.js" %}"></script>
-    <ul id="side-tabs"  data-ajax-url="{% url "events:events_list" %}">
+        <ul id="side-tabs">
         <li><strong>Sorted By:</strong></li>
-        <li><a href="{% url "events:events_list" %}" class="date">Date</a></li>
-        <li><a href="{% url "events:events_list" %}" class="attendees">Number of Attendees</a></li>
-        <li><a class="like_number">Number of Likes</a></li>
-        <li><a class="share_number">Number of Shares</a></li>
+        <li><a href="{% url "events:sort_events" "-date" %}" class = "selected">Date</a></li>
+        <li><a href="{% url "events:sort_events" "-attendees" %}">Number of Attendees</a></li>
+        <li><a href="{% url "events:sort_events" "-like_number" %}">Number of Likes</a></li>
+        <li><a href="{% url "events:sort_events" "-share_number" %}">Number of Shares</a></li>
     </ul>
 {% endblock %}
 {% block contentForList %}
-
     <link href="{% static "css/listing_item_page.css" %}" rel="stylesheet">
     <ul id="eventBoxes">
         {% for event in events %}
-
             <li class="eventBlock">
                 <div class="eventImage">
                     <a href="{% url "events:event_detail" event.id %}">

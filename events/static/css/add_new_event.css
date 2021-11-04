@@ -1,5 +1,5 @@
 
-form#createEvent{
+form.createEvent{
     display: flex;
     flex-direction: column;
     align-items: start;

@@ -5,20 +5,29 @@ body {
     font-size: 20px;
 }
 
-main {
-
-}
 ul.messages{
     font-weight: bold;
     padding: 1em;
     list-style: none;
 }
-ul.messages li.success{
-    background-color: lightyellow;
+li.success{
+    background-color: lightgreen;
+    color: white;
     padding: 1em;
     margin: 0.25em;
 }
-
+li.info{
+    background-color: dodgerblue;
+    color: white;
+    padding: 1em;
+    margin: 0.25em;
+}
+li.warning{
+    background-color: lightpink;
+    color: white;
+    padding: 1em;
+    margin: 0.25em;
+}
 ul {
     list-style-type: none;
 }
