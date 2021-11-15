@@ -27,8 +27,8 @@
                             &nbsp;shares
                         <li>
                     </ul>
-                    <button class="register">Register</button>
                     {% if request.session.username %}
+                        <button class="register" data-ajax-url="{% url "events:event_register" %}">Register</button>
                         <div class="eventButton" data-event-id="{{ event.id }}"
                              data-ajax-url="{% url "events:event_interaction" %}">
                             <img class="shareButton" alt="share-icon"

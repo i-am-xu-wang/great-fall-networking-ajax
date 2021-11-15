@@ -22,6 +22,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('events/', include('events.urls', namespace="events")),
     path('', views.home_page, name="index"),
-
+    path('feed/interation', views.user_info_interaction, name='user_interaction'),
 
 ]

@@ -30,7 +30,7 @@
                         <li>
                     </ul>
                     {% if request.session.username %}
-                        <button class="register">Register</button>
+                        <button class="register" data-ajax-url="{% url "events:event_register" %}">Register</button>
                         <button><a href="{% url "events:edit_event" event.id %}">Edit</a></button>
                         {% if request.session.username == 'admin' %}
                             <form id="delete" name="delete-event" action="{% url "events:delete_event"%}" method="POST">

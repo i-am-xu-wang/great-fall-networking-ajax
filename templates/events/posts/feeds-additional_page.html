@@ -6,7 +6,7 @@
     <link href="{% static "css/feed_page.css" %}" rel="stylesheet">
     <section id="postsArea">
         <div class="postBlock">
-            <div class="userImage">
+            <div class="userImage" data-user-id="1" data-ajax-url="{% url "user_interaction" %}">
                 <img class="heartsQueen" alt="knave-of-hearts"
                      src="{% static "img/site/knave-of-hearts.png" %}">
                 <p>Hearts Queen</p>
@@ -22,7 +22,7 @@
         </div>
 
         <div class="postBlock">
-            <div class="userImage">
+            <div class="userImage" data-user-id="2" data-ajax-url="{% url "user_interaction" %}" >
                 <img alt="cheshire-cat"
                      src="{% static "img/site/cheshire-cat.jpg" %}">
                 <p>Cheshire Cat</p>
@@ -37,7 +37,7 @@
         </div>
 
         <div class="postBlock">
-            <div class="userImage">
+            <div class="userImage" data-user-id="3" data-ajax-url="{% url "user_interaction" %}">
                 <img alt="anonymous-user"
                      src="{% static "img/site/anonymous-user.png" %}">
                 <p>Anonymous User</p>
@@ -53,20 +53,20 @@
         </div>
 
     </section>
-{#    <!--  user editor area -->#}
-{#    <section id="textEditorArea">#}
-{#        <div class="yourImage">#}
-{#            <a href="#">#}
-{#                <img alt="yourImage"#}
-{#                     src="{% static "img/site/alice.png" %}">#}
-{#            </a>#}
-{#            <p>Alice</p>#}
-{#        </div>#}
-{#        <textarea cols="100" id="textEditor" rows="12">#}
-{#                Write your own post...#}
-{#            </textarea>#}
-{#        <button>#}
-{#            Post#}
-{#        </button>#}
-{#    </section>#}
+    {#    <!--  user editor area -->#}
+    {#    <section id="textEditorArea">#}
+    {#        <div class="yourImage">#}
+    {#            <a href="#">#}
+    {#                <img alt="yourImage"#}
+    {#                     src="{% static "img/site/alice.png" %}">#}
+    {#            </a>#}
+    {#            <p>Alice</p>#}
+    {#        </div>#}
+    {#        <textarea cols="100" id="textEditor" rows="12">#}
+    {#                Write your own post...#}
+    {#            </textarea>#}
+    {#        <button>#}
+    {#            Post#}
+    {#        </button>#}
+    {#    </section>#}
 {% endblock %}
