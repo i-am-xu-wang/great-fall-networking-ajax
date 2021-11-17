@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate
 
+
 # Create your views here.
 def profile(request, username):
     user1 = get_object_or_404(User, username=username)
@@ -13,10 +14,11 @@ def profile(request, username):
 def register(request):
     if request.method == 'POST':
         username = request.POST.get('username')
-        email = request.POST.GET('email')
-        password = request.POST.GET('password')
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+        print(username, email, password)
         user = User.objects.create_user(username, email, password)
-        messages.add_message(request, messages.SUCCESS, "You successfully register a new account: %s" % user.name)
+        messages.add_message(request, messages.SUCCESS, "You successfully register a new account: %s" % user.username)
         return redirect('index')
     else:
         return render(request, "users/user/register.html", )
@@ -28,7 +30,7 @@ def login_user(request):
     user = authenticate(username=username, password=password)
     if user is not None:
         request.session['username'] = user.username
-        request.seession['role'] = user.details.role
+        request.session['role'] = user.details.role
         messages.add_message(request, messages.SUCCESS,
                              "You have logged in successfully.")
     else:
@@ -40,4 +42,4 @@ def login_user(request):
 def logout_user(request):
     del request.session['username']
     del request.session['role']
-    return redirect('events:login')
+    return redirect('users:login')

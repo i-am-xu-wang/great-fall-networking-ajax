@@ -1,13 +1,12 @@
 from django.contrib import messages
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
-from .models import Event, User, regular_user, admin_user
+from .models import Event, Account
 
 
 # Create your views here.
 def events_list(request):
     events = Event.objects.all().order_by('date')
-    # events = []
     return render(request,
                   "events/posts/list.html",
                   {"events": events}
@@ -16,7 +15,6 @@ def events_list(request):
 
 def sort_list(request, option):
     events = Event.objects.all().order_by(option)
-    # events = []
     return render(request,
                   "events/posts/list.html",
                   {"events": events}
@@ -46,7 +44,7 @@ def search_result(request):
 
 
 def feed_page(request):
-    users = User.objects.all()
+    users = Account.objects.all()
     return render(request,
                   "events/posts/feeds-additional_page.html",
                   {"users": users}
@@ -131,12 +129,12 @@ def user_info_interaction(request):
         user_id = request.POST.get('user_id')
         print(user_id)
         try:
-            user = User.objects.get(pk=user_id)
+            user = Account.objects.get(pk=user_id)
             return JsonResponse(
                 {'success': 'success', 'name': user.title, 'age': user.age,
                  'gender': user.gender, 'group': user.group, 'intro': user.intro},
                 status=200)
-        except User.DoesNotExist:
+        except Account.DoesNotExist:
             return JsonResponse({'error': 'No User profile found with that id.'}, status=200)
     else:
         return JsonResponse({'error': 'Invalid Ajax Request'}, status=400)

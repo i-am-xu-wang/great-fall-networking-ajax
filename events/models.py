@@ -15,14 +15,14 @@ class Event(models.Model):
     time = models.CharField(default="11:00 AM", max_length=30)
     created_date = models.DateTimeField(auto_now_add=True)
     organizer = models.CharField(max_length=30)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    # user = models.ForeignKey(User, on_delete=models.CASCADE)
     attendees = models.IntegerField(default=0)
     like_number = models.IntegerField(default=0)
     share_number = models.IntegerField(default=0)
     description = models.TextField(blank=True)
 
 
-class User(models.Model):
+class Account(models.Model):
     title = models.CharField(max_length=30)
     gender = models.CharField(max_length=20)
     age = models.IntegerField(default=20)
@@ -31,5 +31,5 @@ class User(models.Model):
     image = models.CharField(max_length=200, default="img/profile/anonymous-user.png")
 
 
-regular_user = {"username": "alice", "password": "hokie"}
-admin_user = {"username": "admin", "password": "admin"}
+# regular_user = {"username": "alice", "password": "hokie"}
+# admin_user = {"username": "admin", "password": "admin"}
