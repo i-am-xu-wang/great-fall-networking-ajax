@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.humanize',
     'events.apps.EventsConfig',
+    'users.apps.UsersConfig',
 ]
 
 MIDDLEWARE = [

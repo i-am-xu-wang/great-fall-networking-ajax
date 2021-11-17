@@ -1,0 +1,24 @@
+{% extends "events/base.html" %}
+{% block page-title %}Profile Page for {{ user.name }}{% endblock %}
+{% load static %}
+{% block content %}
+
+    <h2>Profile for {{ user.name }}</h2>
+    <dl>
+    <dt>
+        Username
+    </dt>
+    <dd>
+        {{ user.name }}
+    </dd>
+    <dt>
+        Email Address
+    </dt>
+    <dd>
+        {{ user.email }}
+    </dd>
+    <dt>Role</dt>
+    <dd>{{ user.detail.role }}</dd>
+    </dl>
+
+{% endblock %}

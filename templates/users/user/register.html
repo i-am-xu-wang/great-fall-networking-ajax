@@ -1,0 +1,26 @@
+{% extends "events/base.html" %}
+{% block page-title %}Register a user{% endblock %}
+{% load static %}
+{% block content %}
+{#    <link type="text/css" href="{% static "css/add_new_event.css" %}" rel="stylesheet">#}
+    <h2>Register User</h2>
+    <form class="registerUser" name="register user"
+          action="{% url "users:register" %}" method="POST">
+        <p> * = required.</p>
+        {% csrf_token %}
+        <p class="userName">
+            <strong>Username *</strong>
+            <input type="text" id="userNameInput" name="name" required>
+        </p>
+        <p class="userEmail">
+            <strong>Email Address *</strong>
+            <input type="email" id="userEmailInput" name="email" required>
+        </p>
+        <p class="userPassword">
+            <strong>Password *</strong>
+            <input type="password" id="userPasswordInput" name="password" required>
+        </p>
+        <input id="submitButton" type="submit" value="Register">
+    </form>
+
+{% endblock %}

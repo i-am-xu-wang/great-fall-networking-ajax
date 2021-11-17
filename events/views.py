@@ -125,22 +125,6 @@ def delete_event(request):
     return redirect('events:events_list')
 
 
-def login(request):
-    username = request.POST.get("username")
-    password = request.POST.get("pw")
-    if username == regular_user['username'] and password == regular_user['password'] or username == admin_user[
-        'username'] and password == admin_user['password']:
-        request.session['username'] = username
-        request.session['role'] = 'regular'
-    return redirect('index')
-
-
-def logout(request):
-    del request.session['username']
-    del request.session['role']
-    return redirect('events:login')
-
-
 def user_info_interaction(request):
     is_ajax = request.headers.get('x-requested-with') == 'XMLHttpRequest'
     if is_ajax and request.method == "POST":

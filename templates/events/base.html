@@ -43,16 +43,16 @@
         <div id="rightHeader">
             {% if request.session.username %}
                 <form id="login-box">
-                    <p>Logged in as <strong>{{ request.session.username }}</strong> |
-                        <a href="{% url 'events:logout' %}"> Log out</a></p>
+                    <p>Logged in as <a href={% url 'users:profile' request.session.username %}> <strong>{{ request.session.username }}</strong> |
+                        <a href="{% url 'users:logout' %}"> Log out</a></p>
                 </form>
             {% else %}
-                <form id="login-box" action="{% url "events:login" %}" method="POST">
+                <form id="login-box" action="{% url "users:login" %}" method="POST">
                     {% csrf_token %}
                     <input name="username" placeholder="Username" type="text">
                     <input name="pw" placeholder="Password" type="password">
                     <input name="submit" type="submit" value="Log in"> or <a
-                        href="#">Register</a>
+                        href="{% url 'users:register' %}">Register</a>
                 </form>
             {% endif %}
         </div>

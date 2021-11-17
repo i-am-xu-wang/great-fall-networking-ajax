@@ -1,5 +1,6 @@
 import datetime
 
+from django.contrib.auth.models import User
 from django.db import models
 
 # Create your models here.
@@ -14,6 +15,7 @@ class Event(models.Model):
     time = models.CharField(default="11:00 AM", max_length=30)
     created_date = models.DateTimeField(auto_now_add=True)
     organizer = models.CharField(max_length=30)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     attendees = models.IntegerField(default=0)
     like_number = models.IntegerField(default=0)
     share_number = models.IntegerField(default=0)
