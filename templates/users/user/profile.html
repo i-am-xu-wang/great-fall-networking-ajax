@@ -2,23 +2,45 @@
 {% block page-title %}Profile Page for {{ user.name }}{% endblock %}
 {% load static %}
 {% block content %}
-
-    <h2>Profile for {{ user.name }}</h2>
-    <dl>
-    <dt>
-        Username
-    </dt>
-    <dd>
-        {{ user.name }}
-    </dd>
-    <dt>
-        Email Address
-    </dt>
-    <dd>
-        {{ user.email }}
-    </dd>
-    <dt>Role</dt>
-    <dd>{{ user.detail.role }}</dd>
-    </dl>
+    <script src="{% static "js/profile.js" %}"></script>
+    <link href="{% static "css/profile_page.css" %}" rel="stylesheet">
+    <h2>Profile for {{ user.username }}</h2>
+    <ul>
+        <li>
+            Username: {{ user.username }}
+        </li>
+        <li> First Name:
+            {% if user.first_name %}
+                {{ user.first_name }}
+            {% else %}
+                Not Disclosed
+            {% endif %}
+        </li>
+        <li> Last Name:
+            {% if user.last_name %}
+                {{ user.last_name }}
+            {% else %}
+                Not Disclosed
+            {% endif %}
+        </li>
+        <li>
+            Email Address: {{ user.email }}
+        </li>
+        <li>Gender: {{ user.details.gender }}</li>
+        <li>Role: {{ user.details.role }}</li>
+    </ul>
+    {% if request.session.username == user.username or request.session.role == "admin" %}
+        <button><a href="{% url "users:edit_profile" user.username %}">Edit</a></button>
+    {% endif %}
+    {% if request.session.username == "admin" %}
+        <label for="role-options">Do you want change this user's role</label>
+        <select id="role-options" name="role-options"
+                data-ajax-url="{% url "users:change_role" %}" data-user-id="{{ user.id }}">
+            <option value="admin">Admin</option>
+            <option value="regular">Regular</option>
+            <option value="unregister">Unregister</option>
+        </select>
+        <button id="submitButton" type="submit" value="submit">Submit</button>
+    {% endif %}
 
 {% endblock %}

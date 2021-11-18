@@ -43,7 +43,7 @@
         <div id="rightHeader">
             {% if request.session.username %}
                 <form id="login-box">
-                    <p>Logged in as <a href={% url 'users:profile' request.session.username %}> <strong>{{ request.session.username }}</strong> |
+                    <p>Logged in as <a href={% url 'users:profile' request.session.username %}> <strong>{{ request.session.username }}</strong></a> |
                         <a href="{% url 'users:logout' %}"> Log out</a></p>
                 </form>
             {% else %}

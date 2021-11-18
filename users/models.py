@@ -5,11 +5,10 @@ from django.dispatch import receiver
 
 
 # Create your models here.
-
-
 class Details(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     role = models.CharField(default="regular", max_length=50)
+    gender = models.CharField(default="not disclosed", max_length=50)
 
 
 @receiver(post_save, sender=User)

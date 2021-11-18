@@ -1,6 +1,9 @@
 from django.contrib import messages
+from django.contrib.auth.models import User
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
+
+from actions.models import Action
 from .models import Event, Account
 
 
@@ -58,6 +61,7 @@ def add_event(request):
         date = request.POST.get('date')
         time = request.POST.get('time')
         description = request.POST.get('description')
+        user = User.objects.get(username=request.session.get('username'))
         new_event = Event(
             title=title,
             location=location,
@@ -65,9 +69,17 @@ def add_event(request):
             time=time,
             description=description,
             organizer=request.session.get('username'),
+            user=user
 
         )
         new_event.save()
+        #log the action
+        action = Action(
+            user = user,
+            verb = "created the new event",
+            target=new_event
+        )
+        action.save()
         messages.add_message(request, messages.SUCCESS, "You successfully added a new event: %s" % new_event.title)
         return redirect('events:event_detail', new_event.id)
     else:
@@ -84,7 +96,6 @@ def edit_event(request, event_id):
         event.description = request.POST.get('description')
         event.save()
         messages.add_message(request, messages.INFO, "You successfully edit the event: %s" % event.title)
-
         return redirect('events:event_detail', event_id)
     else:
         return render(request,

@@ -18,7 +18,7 @@
                         <li class="eventLocation">{{ event.location }}</li>
                         <li class="eventTime">{{ event.date }}</li>
                         <li class="eventTime">{{ event.time }}</li>
-                        <li class="organizer"> Organized by: {{ event.organizer }}</li>
+                        <li class="organizer"><a href={% url 'users:profile' event.user.username %}> Organized by: {{ event.user.username }}</a></li>
                         <li class="dateCreated">Date Posted: {{ event.created_date }}</li>
                         <li class="attendees">
                             <span class="attendeesNumber">{{ event.attendees }}</span>

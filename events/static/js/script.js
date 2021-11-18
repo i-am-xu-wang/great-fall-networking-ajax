@@ -150,19 +150,10 @@ $(document).ready(function () {
             })
     });
 
-
-
-
-
-
-
-
-
     checkQueryString();
     $("#delete").click(function () {
         return confirm("Do you want to delete");
     });
-
 });
 
 //search bar implementation per Project 3 requirement

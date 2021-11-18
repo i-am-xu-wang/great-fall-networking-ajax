@@ -1,0 +1,17 @@
+dl{
+   display: flex;
+   flex-direction: column;
+   align-items: start;
+   margin-left: 200px;
+}
+h2{
+   margin-left: 100px;
+}
+dd{
+   margin-bottom: 15px;
+   margin-top: 15px;
+}
+
+dt{
+   font-weight: bold;
+}
