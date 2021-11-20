@@ -11,7 +11,7 @@ from events.models import Event, Comment
 
 def profile(request, username):
     user1 = get_object_or_404(User, username=username)
-    user_actions = Action.objects.all().filter(user_id=user1.id).order_by('-created')
+    user_actions = Action.objects.all().filter(user_id=user1.id).order_by('-created')[:5]
     return render(request, "users/user/profile.html",
                   {"user": user1, "actions": user_actions})
 
@@ -95,7 +95,6 @@ def edit_user(request, username):
         user.first_name = request.POST.get('firstname')
         user.last_name = request.POST.get('lastname')
         user.email = request.POST.get('email')
-        #  user.password = request.POST.get('password')
         user.set_password(request.POST.get('password'))
         user.details.gender = request.POST.get('gender')
         user.save()
@@ -136,13 +135,18 @@ def post_comment(request):
 def edit_comment(request, comment_id):
     is_ajax = request.headers.get('x-requested-with') == 'XMLHttpRequest'
     if is_ajax and request.method == "POST":
-        comment = Comment.objects.get(pk=comment_id)
-        comment.content = request.POST.get('text')
-        comment.time = datetime.datetime.now()
-        comment.save()
-        event = comment.event
-        messages.add_message(request, messages.INFO, "You successfully edit the comment")
-        return redirect('events:events_list')
+        try:
+            comment = Comment.objects.get(pk=comment_id)
+            comment.content = request.POST.get('text')
+            comment.time = datetime.datetime.now()
+            comment.save()
+            messages.add_message(request, messages.INFO, "You successfully edit the comment")
+            return JsonResponse(
+                {'success': 'success', 'content': comment.content, 'username': comment.author.username,
+                 'time': comment.time},
+                status=200)
+        except Comment.DoesNotExist:
+            return JsonResponse({'error': 'No Comment found with that id.'}, status=200)
     else:
         comment = Comment.objects.get(pk=comment_id)
         event = comment.event
@@ -155,13 +159,16 @@ def delete_comment(request):
     is_ajax = request.headers.get('x-requested-with') == 'XMLHttpRequest'
     if is_ajax and request.method == "POST":
         comment_id = request.POST.get('comment_id')
-        comment = Comment.objects.get(pk=comment_id)
-        event = comment.event
-        comment.delete()
-        # messages.add_message(request, messages.WARNING, "You successfully delete the comment")
-        # comments = fetch_comment_for_an_event(event.id)
-        return redirect('events:event_detail', event.id)
-    return redirect('events:events_list')
+        try:
+            comment = Comment.objects.get(pk=comment_id)
+            comment.delete()
+            return JsonResponse(
+                {'success': 'success', 'comment_id': comment_id},
+                status=200)
+        except Comment.DoesNotExist:
+            return JsonResponse({'error': 'No Comment found with that id.'}, status=200)
+    else:
+        return JsonResponse({'error': 'Invalid Ajax Request'}, status=400)
 
 
 def fetch_comment_for_an_event(event_id):

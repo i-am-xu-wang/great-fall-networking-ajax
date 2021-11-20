@@ -39,7 +39,7 @@ def event_detail(request, event_id):
 
 def home_page(request):
     event = Event.objects.get(pk=1)
-    actions = Action.objects.all().order_by('-created')
+    actions = Action.objects.all().order_by('-created')[:8]
     return render(request,
                   "events/homes/home_page.html",
                   {'event': event, 'actions': actions}

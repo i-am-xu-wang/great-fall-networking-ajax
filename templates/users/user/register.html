@@ -2,7 +2,7 @@
 {% block page-title %}Register a user{% endblock %}
 {% load static %}
 {% block content %}
-    {#    <link type="text/css" href="{% static "css/add_new_event.css" %}" rel="stylesheet">#}
+        <link type="text/css" href="{% static "css/register_page.css" %}" rel="stylesheet">
     {# when user is passing, display the edit profile view#}
     {% if user_account %}
         <h2>Edit Profile Information</h2>
@@ -29,8 +29,7 @@
                 <strong>Password</strong>
                 <input type="password" id="userPasswordInput" value="{{ user_account.password }}" name="password" required>
             </p>
-            <p class="userGender">
-              <div> Gender</div>
+              <label class = "userGender"> Gender</label>
                 <label for="male">Male</label>
                 <input type="radio" id="male" name="gender" value="male"/>
                 <label for="female">Female</label>
@@ -39,7 +38,6 @@
                 <input type="radio" id="others" name="gender" value="others"/>
                 <label for="notDisclose">Not Disclose</label>
                 <input type="radio" id="notDisclose" name="gender" value="not disclosed" checked/>
-            </p>
             <input id="submitButton" type="submit" value="submit">
         </form>
     {% else %}
@@ -69,8 +67,7 @@
                 <strong>Password *</strong>
                 <input type="password" id="userPasswordInput" name="password" required>
             </p>
-            <p class="userGender">
-            <div> Gender</div>
+             <label class = "userGender"> Gender</label>
             <label for="male">Male</label>
             <input type="radio" id="male" name="gender"/>
             <label for="female">Female</label>
@@ -79,7 +76,7 @@
             <input type="radio" id="others" name="gender"/>
             <label for="notDisclose">Not Disclose</label>
             <input type="radio" id="notDisclose" name="gender"/>
-            </p>
+
           <input id="submitButton" type="submit" value="submit">
         </form>
     {% endif %}

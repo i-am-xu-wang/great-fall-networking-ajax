@@ -25,7 +25,7 @@ $(document).ready(function () {
                 if (json.success === 'success') {
                     var new_role = json.user_role;
                     console.log(new_role);
-                    $(this).siblings('ul').children('li').children('span#new-role').text(new_role);
+                    $(this).parent().siblings('ul').children('li').children('span#new-role').text(new_role);
                 } else {
                     alert("Error: " + json.error)
                 }
@@ -47,7 +47,6 @@ $(document).ready(function () {
         var event_id = $(this).parent().attr('data-event-id');
         var text = $(this).siblings('#textEditor').val();
         var edit_or_add = $(this).parent().attr('data-operation-type');
-        var event_detail_url = "events/" + event_id + "/edit"
         console.log(edit_or_add)
         console.log(username)
         console.log(event_id);
@@ -65,11 +64,23 @@ $(document).ready(function () {
             context: this
         })
             .done(function (json) {
-                if (edit_or_add === "add") {
-                    location.reload()
-                } else {
-                    location.replace(document.referrer);
-                }
+                var newCommentPlace = $(this).parent().siblings('#newComment')
+                var newComment = $('<div class="commentBlock">\n' +
+                    '                <div class="commentContent">' + json.content + ' </div>\n' +
+                    '                <div class="commentInfo">\n' +
+                    '                    <div class="commentName">Post by:\n' +
+                    json.username + '</a>\n' +
+                    '                    </div>\n' +
+                    '                    <div class="commentTime"> Just Now</div>\n' +
+                    '\n' +
+                    '                    <div class = "commentButtons">\n' +
+                    '                    <button class = "edit">Edit</button>\n' +
+                    '                    <form name="delete-comment" data-ajax-url="{% url \'users:delete_comment\' %}"\n' +
+                    '                          data-comment-id="{{ comment.id }}">\n' +
+                    '                        <input type = "button" class="deleteComment" value = "delete">\n' +
+                    '                    </form>\n' +
+                    '                    </div>\n')
+                $(newComment).appendTo(newCommentPlace);
             })
             .fail(function (xhr, status, errorThrown) {
                 alert("Sorry, there was a problem!");
@@ -96,9 +107,13 @@ $(document).ready(function () {
                 headers: {'X-CSRFToken': csrftoken},
                 context: this
             })
-                .done(function () {
+                .done(function (json) {
                     alert("you successfully delete a post")
-                    location.reload();
+                    if (json.success === 'success') {
+                        $('input[value=' + json.comment_id + ']').parent().remove();
+                    } else {
+                        alert("Error: " + json.error)
+                    }
                 })
                 .fail(function (xhr, status, errorThrown) {
                     alert("Sorry, there was a problem!");
