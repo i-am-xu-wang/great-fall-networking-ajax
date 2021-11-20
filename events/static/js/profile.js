@@ -5,11 +5,14 @@ $(document).ready(function () {
         var change_role_url = $(this).siblings('#role-options').attr('data-ajax-url');
         var user_id = $(this).siblings('#role-options').attr('data-user-id');
         var user_role = $(this).siblings('#role-options').val()
+        var operator_account = $(this).siblings('#role-options').attr('data-operator-name');
+        console.log(operator_account)
         $.ajax({
             url: change_role_url,
             data: {
                 user_id: user_id,
                 user_role: user_role,
+                operator_account: operator_account,
             },
             // Whether this is a POST or GET request
             type: "POST",
@@ -43,8 +46,8 @@ $(document).ready(function () {
         var username = $(this).parent().attr('data-user-name');
         var event_id = $(this).parent().attr('data-event-id');
         var text = $(this).siblings('#textEditor').val();
-        var edit_or_add =  $(this).parent().attr('data-operation-type');
-        var event_detail_url = "events/"+ event_id + "/edit"
+        var edit_or_add = $(this).parent().attr('data-operation-type');
+        var event_detail_url = "events/" + event_id + "/edit"
         console.log(edit_or_add)
         console.log(username)
         console.log(event_id);
@@ -57,14 +60,14 @@ $(document).ready(function () {
                 text: text,
             },
             type: "POST",
+            dataType: "json",
             headers: {'X-CSRFToken': csrftoken},
             context: this
         })
-            .done(function () {
-                if(edit_or_add === "add"){
-                      location.reload()
-                }
-                else{
+            .done(function (json) {
+                if (edit_or_add === "add") {
+                    location.reload()
+                } else {
                     location.replace(document.referrer);
                 }
             })
@@ -79,7 +82,7 @@ $(document).ready(function () {
     //delete a comment
     $('.deleteComment').click(function () {
         var approval = confirm("Do you want to delete");
-        if(approval === true) {
+        if (approval === true) {
             var delete_comment_url = $(this).parent().attr('data-ajax-url');
             var comment_id = $(this).parent().attr('data-comment-id');
             console.log(delete_comment_url)

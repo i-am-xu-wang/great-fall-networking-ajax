@@ -4,43 +4,56 @@
 {% block content %}
     <script src="{% static "js/profile.js" %}"></script>
     <link href="{% static "css/profile_page.css" %}" rel="stylesheet">
-    <h2>Profile for {{ user.username }}</h2>
-    <ul>
-        <li>
-            Username: {{ user.username }}
+    <h2>Profile of {{ user.username }}
+        {% if request.session.username == user.username or request.session.role == "admin" %}
+            <button id="editButtonProfile"><a href="{% url "users:edit_profile" user.username %}">Edit This Profile</a>
+            </button>
+        {% endif %}</h2>
+    <ul id="userInfoBlock">
+        <li class="userData">
+            <span class="userInfoTitle">Username:</span>
+            <span>{{ user.username }}</span>
         </li>
-        <li> First Name:
+        <li class="userData"><span class="userInfoTitle">First Name:</span>
             {% if user.first_name %}
-                {{ user.first_name }}
+                <span> {{ user.first_name }}</span>
             {% else %}
-                Not Disclosed
+                <span> Not Disclosed</span>
             {% endif %}
         </li>
-        <li> Last Name:
+        <li class="userData"><span class="userInfoTitle">Last Name:</span>
             {% if user.last_name %}
-                {{ user.last_name }}
+                <span> {{ user.last_name }}</span>
             {% else %}
-                Not Disclosed
+                <span> Not Disclosed</span>
             {% endif %}
         </li>
-        <li>
-            Email Address: {{ user.email }}
+        <li class="userData">
+            <span class="userInfoTitle">Email Address:</span> <span>{{ user.email }}</span>
         </li>
-        <li>Gender: {{ user.details.gender }}</li>
-        <li>Role: <span id = "new-role"> {{ user.details.role }}</span></li>
+        <li class="userData"><span class="userInfoTitle">Gender:</span> <span>{{ user.details.gender }}</span></li>
+        <li class="userData"><span class="userInfoTitle">Role: </span><span
+                id="new-role"> {{ user.details.role }}</span></li>
     </ul>
-    {% if request.session.username == user.username or request.session.role == "admin" %}
-        <button><a href="{% url "users:edit_profile" user.username %}">Edit</a></button>
-    {% endif %}
+
+    <h3>Recent Activities From this User</h3>
+    <section id="recentActivities">
+        {% include "actions/action/activity.html" %}
+    </section>
     {% if request.session.role == "admin" %}
+        <h4>For Admin Only</h4>
+        <div id="roleChange">
         <label for="role-options">Do you want change this user's role</label>
-        <select id="role-options" name="role-options"
-                data-ajax-url="{% url "users:change_role" %}" data-user-id="{{ user.id }}">
-            <option value="admin">Admin</option>
-            <option value="regular">Regular</option>
-            <option value="unregister">Unregister</option>
-        </select>
-        <button id="submitButton" type="submit" value="submit">Submit</button>
+
+            <select id="role-options" name="role-options"
+                    data-operator-name="{{ request.session.username }}" data-ajax-url="{% url "users:change_role" %}"
+                    data-user-id="{{ user.id }}">
+                <option value="admin">Admin</option>
+                <option value="regular">Regular</option>
+                <option value="unregister">Unregister</option>
+            </select>
+            <button id="submitButton" type="submit" value="submit">Submit</button>
+        </div>
     {% endif %}
 
 {% endblock %}

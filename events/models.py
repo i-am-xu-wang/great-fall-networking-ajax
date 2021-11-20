@@ -22,12 +22,13 @@ class Event(models.Model):
     like_number = models.IntegerField(default=0)
     share_number = models.IntegerField(default=0)
     description = models.TextField(blank=True)
+    is_deleted = models.BooleanField(default=False)
 
     def __str__(self):
         return self.title
 
     def get_absolute_url(self):
-        return reverse('events:event-detail', args=[self.id])
+        return reverse('events:event_detail', args=[self.id])
 
 
 class Comment(models.Model):

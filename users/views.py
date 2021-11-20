@@ -5,13 +5,15 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate
 import datetime
 # Create your views here.
+from actions.models import Action
 from events.models import Event, Comment
 
 
 def profile(request, username):
     user1 = get_object_or_404(User, username=username)
+    user_actions = Action.objects.all().filter(user_id=user1.id).order_by('-created')
     return render(request, "users/user/profile.html",
-                  {"user": user1})
+                  {"user": user1, "actions": user_actions})
 
 
 def change_user_role(request):
@@ -19,11 +21,19 @@ def change_user_role(request):
     if is_ajax and request.method == "POST":
         user_id = request.POST.get('user_id')
         user_role = request.POST.get('user_role')
+        operator_account = request.POST.get('operator_account')
+        operator = User.objects.get(username=operator_account)
         try:
             user = User.objects.get(pk=user_id)
             user.details.role = user_role
             user.details.save()
             user.save()
+            change_role_action = Action(
+                user=operator,
+                verb="changed the role",
+                target=user
+            )
+            change_role_action.save()
             return JsonResponse(
                 {'success': 'success', 'user_role': user_role},
                 status=200)
@@ -45,7 +55,7 @@ def register(request):
         if User.objects.filter(email=email).exists():
             messages.add_message(request, messages.WARNING,
                                  "This email has been used.")
-        return redirect('users:register')
+            return redirect('users:register')
         user = User.objects.create_user(username, email, password)
         user.first_name = request.POST.get('firstname')
         user.last_name = request.POST.get('lastname')

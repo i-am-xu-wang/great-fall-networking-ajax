@@ -9,7 +9,7 @@ from .models import Event, Account, Comment
 
 # Create your views here.
 def events_list(request):
-    events = Event.objects.all().order_by('date')
+    events = Event.objects.all().order_by('date').filter(is_deleted=False)
     return render(request,
                   "events/posts/list.html",
                   {"events": events}
@@ -17,7 +17,7 @@ def events_list(request):
 
 
 def sort_list(request, option):
-    events = Event.objects.all().order_by(option)
+    events = Event.objects.all().order_by(option).filter(is_deleted=False)
     return render(request,
                   "events/posts/list.html",
                   {"events": events}
@@ -39,10 +39,10 @@ def event_detail(request, event_id):
 
 def home_page(request):
     event = Event.objects.get(pk=1)
-    relevant_actions = Action.objects.all().order_by('-created')
+    actions = Action.objects.all().order_by('-created')
     return render(request,
                   "events/homes/home_page.html",
-                  {'event': event, 'relevant_actions': relevant_actions}
+                  {'event': event, 'actions': actions}
                   )
 
 
@@ -95,11 +95,29 @@ def add_event(request):
 def edit_event(request, event_id):
     event = Event.objects.get(pk=event_id)
     if request.method == 'POST':
-        event.title = request.POST.get('title')
+        title = request.POST.get('title')
+        if event.title != title:
+            title_change_action = Action(
+                user=event.user,
+                verb="edited the event title",
+                target=event
+            )
+            title_change_action.save()
+
+        description = request.POST.get('description')
+        if event.description != description:
+            description_change_action = Action(
+                user=event.user,
+                verb="edited the event description",
+                target=event
+            )
+            description_change_action.save()
+
         event.location = request.POST.get('location')
         event.date = request.POST.get('date')
         event.time = request.POST.get('time')
-        event.description = request.POST.get('description')
+        event.title = title
+        event.description = description
         event.save()
         messages.add_message(request, messages.INFO, "You successfully edit the event: %s" % event.title)
         return redirect('events:event_detail', event_id)
@@ -134,7 +152,14 @@ def delete_event(request):
     if request.method == 'POST':
         event_id = request.POST.get('event_id')
         event = Event.objects.get(pk=event_id)
-        event.delete()
+        event.is_deleted = True
+        event.save()
+        delete_event_action = Action(
+            user=event.user,
+            verb="delete the event",
+            target=event
+        )
+        delete_event_action.save()
         messages.add_message(request, messages.WARNING, "You successfully delete the event: %s" % event.title)
         redirect('events:events_list')
     return redirect('events:events_list')

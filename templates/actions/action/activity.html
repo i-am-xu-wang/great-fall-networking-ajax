@@ -1,0 +1,35 @@
+{% load humanize %}
+{% load static %}
+<ul id="activityFeed">
+ <link href="{% static "css/activity.css" %}" rel="stylesheet">
+    {% for action in actions %}
+        <li class="activity">
+            <a class = "actionUser" href="{{ action.user.details.get_absolute_url }}">{{ action.user.username }}</a>
+            {{ action.verb }}
+            {#if the action is create event and the event is not deleted, provide the hyperlink of that target#}
+            {% if action.verb == 'created the new event' %}
+                {% if action.target.is_deleted == True %}
+                    <span class = "actionTarget"> "{{ action.target }}"</span>
+                {% else %}
+                    "<a class = "actionTarget" href="{{ action.target.get_absolute_url }}">{{ action.target }}</a>"
+                {% endif %}
+                {#if the action is edit event title to description and the event is not deleted, provide the hyperlink of that target#}
+            {% elif action.verb == 'edited the event title' or action.verb == 'edited the event description' %}
+                {% if action.target.is_deleted == True %}
+                    of  <span class = "actionTarget"> "{{ action.target }}"</span>
+                {% else %}
+                    of "<a class = "actionTarget" href="{{ action.target.get_absolute_url }}">{{ action.target }}</a>"
+                {% endif %}
+                {#if the action is delete event#}
+            {% elif action.verb == 'delete the event' %}
+                <span class = "actionTarget"> "{{ action.target }}"</span>
+                {#if the action is change the user role#}
+            {% elif action.verb == 'changed the role' %}
+                of "<a class = "actionTarget" href="{{ action.target.details.get_absolute_url}}">{{ action.target }}</a>"
+            {% endif %}
+            at {{ action.created|naturaltime }}
+        </li>
+    {% empty %}
+        <li>No Activity yet.</li>
+    {% endfor %}
+</ul>
