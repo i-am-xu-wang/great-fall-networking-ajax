@@ -1,0 +1,25 @@
+li.activity {
+    margin-bottom: 20px;
+    color: lightseagreen;
+}
+
+a.actionTarget {
+    color: lightseagreen;
+    font-weight: bold;
+}
+
+span.actionTarget {
+    color: lightseagreen;
+    font-weight: bold;
+}
+
+a.actionUser {
+    font-weight: bold;
+    font-size: large;
+    color: lightseagreen;
+}
+
+a:hover {
+    color: darkgreen;
+    text-decoration: none;
+}

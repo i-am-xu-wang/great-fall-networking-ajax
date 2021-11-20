@@ -32,7 +32,8 @@
                     <input type="text" id="eventLocationInput" name="location" value="{{ event.location }}" required>
                 </p>
                 <p><strong>Date:</strong> <input type="text" name="date" id="datepicker" value="{{ event.date }}" required></p>
-                <p><strong>Time:</strong> <input type="text" name="time" value="{{ event.time }}"> <small id="format" required>(Following
+                <p><strong>Time:</strong> <input type="text" name="time" value="{{ event.time }}" required>
+                    <small id="format">(Following
                     Format: 10:00 AM)</small></p>
                 <div class="eventDescription">
                     <strong>Event Description:</strong>
@@ -60,7 +61,7 @@
                     <strong>Event Description:</strong>
                 </div>
                 <textarea id="eventDescriptionInput" name="description"></textarea>
-                <input id="submitButton" type="submit" value="submit">
+                <input id="changeRole" type="submit" value="submit">
             </form>
         {% endif %}
 
@@ -68,6 +69,7 @@
     {% else %}
         <h3> Log in to create an Event!</h3>
     {% endif %}
+    </body>
 {% endblock %}
-</body>
+
 </html>

@@ -21,6 +21,7 @@ from events import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('events/', include('events.urls', namespace="events")),
+    path('users/', include('users.urls', namespace="users")),
     path('', views.home_page, name="index"),
     path('feed/interation', views.user_info_interaction, name='user_interaction'),
 

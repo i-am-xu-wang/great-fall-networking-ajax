@@ -4,6 +4,7 @@
 {% block content %}
 
     {% if request.session.username %}
+        {#homepage with user login#}
         <link href="{% static "css/index.css" %}" rel="stylesheet">
         <section id="homeBoxes">
             <h1>Upcoming Events For You</h1>
@@ -41,6 +42,8 @@
             </div>
             <h1>Recent Updates in Groups</h1>
             <div id="selectedGroupForUsers">
+                <h3>New Activities</h3>
+                {% include "actions/action/activity.html" %}
                 <h3>New Feeds</h3>
                 <div id="feedInHomePage">
                     <ul id=feedImagesInHome>
@@ -83,6 +86,7 @@
             </div>
         </section>
     {% else %}
+        {#        home page without log in#}
         <link href="{% static "css/home_without_login.css" %}" rel="stylesheet">
         <h1> Register Account Today to Find Out More!</h1>
         <ul id="feature-tab">

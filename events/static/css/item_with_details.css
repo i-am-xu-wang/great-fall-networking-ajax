@@ -28,6 +28,11 @@
     margin-bottom: 10px;
 }
 
+button.register {
+    width: 120px;
+}
+
+
 .attendees {
     margin-top: 20px;
     display: flex;
@@ -38,14 +43,17 @@
 }
 
 button {
-    margin-left: 15%;
-    height: 10%;
+    height: 30px;
+    text-align: center;
+    line-height: 15px;
 }
 
 button a {
     text-decoration: none;
     font-size: 15px;
+
 }
+
 
 .eventButton {
     margin-top: 5%;
@@ -114,23 +122,75 @@ button a {
     margin-left: 3%;
 }
 
+div.commentBlock {
+    margin-left: 3%;
+    width: 50%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+p.noComment {
+    margin-left: 3%;
+}
+
+div.commentContent {
+    font-size: 20px;
+    color: mediumaquamarine;
+}
+
+div.commentInfo {
+    display: flex;
+    flex-direction: column;
+}
+
+div.commentName {
+    font-size: 15px;
+    margin-left: 10px;
+    float: end;
+}
+
+div.commentName a {
+    font-weight: bold;
+}
+
+div.commentTime {
+    font-size: small;
+    float: right;
+}
+
+#postComment {
+    margin-left: 3%;
+}
+
+div.commentButtons {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+     flex: 0 50%;
+}
+
 p {
     font-size: small;
     color: grey;
 }
-button.delete{
-    margin-top: 15px;
-}
-.organizer{
+
+.organizer {
     margin-top: 10px;
     font-size: 18px;
     color: gray;
 }
-.dateCreated{
+
+.dateCreated {
     font-size: 18px;
     color: gray;
 }
 
+.textarea {
+    margin-left: 20px;
+}
 
 @media all and (min-width: 768px) {
     #mainContent {
