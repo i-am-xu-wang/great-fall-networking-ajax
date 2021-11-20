@@ -30,6 +30,13 @@ class Event(models.Model):
         return reverse('events:event-detail', args=[self.id])
 
 
+class Comment(models.Model):
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    content = models.TextField(blank=True)
+    event = models.ForeignKey(Event, on_delete=models.CASCADE)
+    time = models.DateTimeField(auto_now_add=True)
+
+
 class Account(models.Model):
     title = models.CharField(max_length=30)
     gender = models.CharField(max_length=20)

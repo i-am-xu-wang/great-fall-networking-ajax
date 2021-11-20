@@ -27,12 +27,12 @@
             Email Address: {{ user.email }}
         </li>
         <li>Gender: {{ user.details.gender }}</li>
-        <li>Role: {{ user.details.role }}</li>
+        <li>Role: <span id = "new-role"> {{ user.details.role }}</span></li>
     </ul>
     {% if request.session.username == user.username or request.session.role == "admin" %}
         <button><a href="{% url "users:edit_profile" user.username %}">Edit</a></button>
     {% endif %}
-    {% if request.session.username == "admin" %}
+    {% if request.session.role == "admin" %}
         <label for="role-options">Do you want change this user's role</label>
         <select id="role-options" name="role-options"
                 data-ajax-url="{% url "users:change_role" %}" data-user-id="{{ user.id }}">

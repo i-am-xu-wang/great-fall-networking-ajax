@@ -4,7 +4,7 @@ from django.http import JsonResponse
 from django.shortcuts import render, redirect
 
 from actions.models import Action
-from .models import Event, Account
+from .models import Event, Account, Comment
 
 
 # Create your views here.
@@ -26,9 +26,14 @@ def sort_list(request, option):
 
 def event_detail(request, event_id):
     event = Event.objects.get(pk=event_id)
+    all_comments = Comment.objects.all().order_by('-time')
+    comments = []
+    for comment in all_comments:
+        if comment.event_id == event.id:
+            comments.append(comment)
     return render(request,
                   'events/posts/item_detail.html',
-                  {'event': event}
+                  {'event': event, 'comments': comments}
                   )
 
 
@@ -73,15 +78,16 @@ def add_event(request):
 
         )
         new_event.save()
-        #log the action
+        # log the action
         action = Action(
-            user = user,
-            verb = "created the new event",
+            user=user,
+            verb="created the new event",
             target=new_event
         )
         action.save()
         messages.add_message(request, messages.SUCCESS, "You successfully added a new event: %s" % new_event.title)
-        return redirect('events:event_detail', new_event.id)
+        comments = []
+        return redirect('events:event_detail', new_event.id, comments)
     else:
         return render(request, 'events/posts/add_new_event.html')
 

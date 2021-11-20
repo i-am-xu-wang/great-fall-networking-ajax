@@ -3,6 +3,7 @@
 {% load static %}
 {% block detailContent %}
     <link href="{% static "css/item_with_details.css" %}" rel="stylesheet">
+    <script src="{% static "js/profile.js" %}"></script>
     <section id="mainContent">
         <section id="eventBlock">
             <div id="eventPart1">
@@ -18,7 +19,8 @@
                         <li class="eventLocation">{{ event.location }}</li>
                         <li class="eventTime">{{ event.date }}</li>
                         <li class="eventTime">{{ event.time }}</li>
-                        <li class="organizer"><a href={% url 'users:profile' event.user.username %}> Organized by: {{ event.user.username }}</a></li>
+                        <li class="organizer"><a href={% url 'users:profile' event.user.username %}> Organized
+                            by: {{ event.user.username }}</a></li>
                         <li class="dateCreated">Date Posted: {{ event.created_date }}</li>
                         <li class="attendees">
                             <span class="attendeesNumber">{{ event.attendees }}</span>
@@ -32,8 +34,9 @@
                     {% if request.session.username %}
                         <button class="register" data-ajax-url="{% url "events:event_register" %}">Register</button>
                         <button><a href="{% url "events:edit_event" event.id %}">Edit</a></button>
-                        {% if request.session.username == 'admin' %}
-                            <form id="delete" name="delete-event" action="{% url "events:delete_event"%}" method="POST">
+                        {% if request.session.role == 'admin' %}
+                            <form id="delete" name="delete-event" action="{% url "events:delete_event" %}"
+                                  method="POST">
                                 {% csrf_token %}
                                 <input type="hidden" name="event_id" value="{{ event.id }}">
                                 <button class="delete">Delete</button>
@@ -132,5 +135,62 @@
                      src="{% static "img/feed/season-feed3.jpg" %}">
             </a>
         </div>
+        <h5>Comments of this Event</h5>
+        {% for comment in comments %}
+            <div class="commentBlock">
+                <div class="commentContent">{{ comment.content }} </div>
+                <div class="commentInfo">
+                    <div class="commentName">Post by:
+                        <a href={% url 'users:profile' comment.author.username %}>{{ comment.author.username }}</a>
+                    </div>
+                    <div class="commentTime">{{ comment.time }}</div>
+
+                {#edit and delete function, users can delete/edit comments posted by them, admin can do it in any comments#}
+                {% if request.session.username  == comment.author.username or request.session.role == "admin" %}
+                    <div class = "commentButtons">
+                    <button class = "edit"><a href="{% url "users:edit_comment" comment.id %}">Edit</a></button>
+                    <form name="delete-comment" data-ajax-url="{% url 'users:delete_comment' %}"
+                          data-comment-id="{{ comment.id }}">
+                        {% csrf_token %}
+                        <input type = "button" class="deleteComment" value = "delete">
+                    </form>
+                    </div>
+                {% endif %}
+                </div>
+            </div>
+
+        {% empty %}
+            <p class="noComment">No Comments yet. Try to add a new one yourself!</p>
+        {% endfor %}
+        {% if request.session.username %}
+            {% if comment %}
+                {# when comment.id is passing, display the edit comment view#}
+                <h5>Edit your comment for this Event</h5>
+                <form id="postComment" data-ajax-url="{% url 'users:edit_comment' comment.id %}"
+                      data-user-name="{{ request.session.username }}"
+                      data-event-id="{{ event.id }}"
+                data-operation-type = "edit">
+                    {% csrf_token %}
+                    <textarea cols="40" id="textEditor" rows="3" name="comment-text"
+                              placeholder="Post a comment for this event..">{{ comment.content }}</textarea>
+                    <input id="submitCommentButton" type="button" value="post">
+                </form>
+            {% else %}
+                <!--  post comment area -->
+                <h5>Post a Comment as <a href={% url 'users:profile' request.session.username %}></a> for this Event
+                </h5>
+                <form id="postComment" data-ajax-url="{% url 'users:post_comment' %}"
+                      data-user-name="{{ request.session.username }}"
+                      data-event-id="{{ event.id }}"
+                data-operation-type = "edit">
+                    {% csrf_token %}
+                    <textarea cols="40" id="textEditor" rows="3" name="comment-text"
+                              placeholder="Post a comment for this event.."></textarea>
+                    <input id="submitCommentButton" type="button" value="post">
+                </form>
+            {% endif %}
+        {% else %}
+            <p class="noComment">Login in to post a comment!</p>
+        {% endif %}
     </section>
 {% endblock %}
