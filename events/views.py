@@ -39,9 +39,10 @@ def event_detail(request, event_id):
 
 def home_page(request):
     event = Event.objects.get(pk=1)
+    relevant_actions = Action.objects.all().order_by('-created')
     return render(request,
                   "events/homes/home_page.html",
-                  {'event': event}
+                  {'event': event, 'relevant_actions': relevant_actions}
                   )
 
 
@@ -86,8 +87,7 @@ def add_event(request):
         )
         action.save()
         messages.add_message(request, messages.SUCCESS, "You successfully added a new event: %s" % new_event.title)
-        comments = []
-        return redirect('events:event_detail', new_event.id, comments)
+        return redirect('events:event_detail', new_event.id)
     else:
         return render(request, 'events/posts/add_new_event.html')
 

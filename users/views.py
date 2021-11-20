@@ -38,8 +38,20 @@ def register(request):
         username = request.POST.get('username')
         email = request.POST.get('email')
         password = request.POST.get('password')
-        request.session['username'] = username
+        if User.objects.filter(username=username).exists():
+            messages.add_message(request, messages.WARNING,
+                                 "This username has been taken.")
+            return redirect('users:register')
+        if User.objects.filter(email=email).exists():
+            messages.add_message(request, messages.WARNING,
+                                 "This email has been used.")
+        return redirect('users:register')
         user = User.objects.create_user(username, email, password)
+        user.first_name = request.POST.get('firstname')
+        user.last_name = request.POST.get('lastname')
+        user.save()
+        request.session['username'] = username
+        request.session['role'] = user.details.role
         messages.add_message(request, messages.SUCCESS, "You successfully register a new account: %s" % user.username)
         return redirect('index')
     else:
@@ -73,7 +85,8 @@ def edit_user(request, username):
         user.first_name = request.POST.get('firstname')
         user.last_name = request.POST.get('lastname')
         user.email = request.POST.get('email')
-        user.password = request.POST.get('password')
+        #  user.password = request.POST.get('password')
+        user.set_password(request.POST.get('password'))
         user.details.gender = request.POST.get('gender')
         user.save()
         messages.add_message(request, messages.INFO, "You successfully edit user account: %s" % user.username)
