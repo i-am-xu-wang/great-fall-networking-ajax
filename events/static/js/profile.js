@@ -39,7 +39,7 @@ $(document).ready(function () {
             })
     });
 
-    //add/edit comment
+    //add comment
     $('#submitCommentButton').click(function () {
 
         var add_comment_url = $(this).parent().attr('data-ajax-url');
@@ -89,6 +89,16 @@ $(document).ready(function () {
                 console.dir(xhr);
             })
     });
+
+    //edit a comment
+
+
+
+
+
+
+
+
 
     //delete a comment
     $('.deleteComment').click(function () {
