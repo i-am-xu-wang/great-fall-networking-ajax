@@ -1,0 +1,66 @@
+/*this file is providing by-default style all over the project*/
+body {
+    font: 1em normal Verdana, Tahoma, sans-serif;
+    color: cornflowerblue;
+    font-size: 20px;
+}
+
+ul.messages{
+    font-weight: bold;
+    padding: 1em;
+    list-style: none;
+}
+li.success{
+    background-color: lightgreen;
+    color: white;
+    padding: 1em;
+    margin: 0.25em;
+}
+li.info{
+    background-color: dodgerblue;
+    color: white;
+    padding: 1em;
+    margin: 0.25em;
+}
+li.warning{
+    background-color: lightpink;
+    color: white;
+    padding: 1em;
+    margin: 0.25em;
+}
+ul {
+    list-style-type: none;
+}
+
+a,
+a:visited,
+input[type=submit] {
+    /* do NOT use blue for this; change the color to fit your theme */
+    color: cornflowerblue;
+    text-decoration: none;
+
+}
+
+a:hover,
+a:active,
+input[type=submit]:hover,
+ul.buttons a:hover {
+    /* do NOT use purple for this; change the color to fit your theme */
+    color: cadetblue;
+    text-decoration: none;
+}
+
+h6 a {
+    color: grey;
+    text-decoration: none;
+}
+
+button {
+    margin-left: 15%;
+    text-decoration: none;
+    color: cornflowerblue;
+    height:40px;
+}
+.shareNumber,.likeNumber{
+    margin-left: 20px;
+}

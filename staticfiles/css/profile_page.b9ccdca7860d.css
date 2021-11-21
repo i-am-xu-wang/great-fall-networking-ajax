@@ -1,0 +1,29 @@
+
+ul#userInfoBlock{
+   margin-left: 100px;
+}
+.userData{
+   width: 40%;
+   margin-bottom: 20px;
+}
+.userInfoTitle{
+   font-weight: bold;
+}
+
+h2{
+   margin-left: 100px;
+}
+h3{
+   margin-left: 100px;
+}
+h4{
+   margin-left: 100px;
+   color: grey;
+}
+#recentActivities{
+    margin-left: 100px;
+}
+#roleChange{
+    margin-left: 100px;
+    color: grey;
+}
