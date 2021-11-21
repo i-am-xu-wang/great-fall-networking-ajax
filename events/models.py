@@ -6,8 +6,6 @@ from django.db import models
 # Create your models here.
 from django.urls import reverse
 
-from great_fall_events import settings
-
 
 class Event(models.Model):
     title = models.CharField(max_length=200)
