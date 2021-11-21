@@ -8,7 +8,7 @@
         <section id="eventBlock">
             <div id="eventPart1">
                 <div id="eventImageInEventPage">
-                    <a href="#">
+                    <a href="{%  url 'events:event_detail' event.id %}">
                         <img alt="bird watchers"
                              src="{% static event.image %}">
                     </a>
@@ -149,7 +149,7 @@
                 {#edit and delete function, users can delete/edit comments posted by them, admin can do it in any comments#}
                 {% if request.session.username  == comment.author.username or request.session.role == "admin" %}
                     <div class = "commentButtons">
-                    <button class = "edit"><a href="{% url "users:edit_comment" comment.id %}">Edit</a></button>
+                   <button class = "edit"><a href="{% url "users:edit_comment" comment.id %}">Edit</a></button>
                     <form name="delete-comment" data-ajax-url="{% url 'users:delete_comment' %}"
                           data-comment-id="{{ comment.id }}">
                         {% csrf_token %}
@@ -166,27 +166,27 @@
         {% endfor %}
         {% if request.session.username %}
             {% if comment %}
-                {# when comment.id is passing, display the edit comment view#}
-                <h5>Edit your comment for this Event</h5>
+{#                 when comment.id is passing, display the edit comment view#}
+               <h5 class = "titleTextArea">Edit your comment for this Event</h5>
                 <form id="postComment" data-ajax-url="{% url 'users:edit_comment' comment.id %}"
                       data-user-name="{{ request.session.username }}"
                       data-event-id="{{ event.id }}"
                 data-operation-type = "edit">
                     {% csrf_token %}
-                    <textarea cols="40" id="textEditor" rows="3" name="comment-text"
+                    <textarea cols="40" class="textEditor" rows="3" name="comment-text"
                               placeholder="Post a comment for this event..">{{ comment.content }}</textarea>
                     <input id="submitCommentButton" type="button" value="post">
                 </form>
             {% else %}
                 <!--  post comment area -->
-                <h5>Post a Comment as <a href={% url 'users:profile' request.session.username %}></a> for this Event
+                <h5 class = "titleTextArea">Post a Comment as <a href={% url 'users:profile' request.session.username %}></a> for this Event
                 </h5>
                 <form id="postComment" data-ajax-url="{% url 'users:post_comment' %}"
                       data-user-name="{{ request.session.username }}"
                       data-event-id="{{ event.id }}"
-                data-operation-type = "edit">
+                data-operation-type = "add">
                     {% csrf_token %}
-                    <textarea cols="40" id="textEditor" rows="3" name="comment-text"
+                    <textarea cols="40" class="textEditor" rows="3" name="comment-text"
                               placeholder="Post a comment for this event.."></textarea>
                     <input id="submitCommentButton" type="button" value="post">
                 </form>

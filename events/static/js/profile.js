@@ -39,13 +39,12 @@ $(document).ready(function () {
             })
     });
 
-    //add comment
+    //add/edit comment
     $('#submitCommentButton').click(function () {
-
         var add_comment_url = $(this).parent().attr('data-ajax-url');
         var username = $(this).parent().attr('data-user-name');
         var event_id = $(this).parent().attr('data-event-id');
-        var text = $(this).siblings('#textEditor').val();
+        var text = $(this).siblings('.textEditor').val();
         var edit_or_add = $(this).parent().attr('data-operation-type');
         console.log(edit_or_add)
         console.log(username)
@@ -64,12 +63,13 @@ $(document).ready(function () {
             context: this
         })
             .done(function (json) {
+                console.log(json.id)
                 var newCommentPlace = $(this).parent().siblings('#newComment')
                 var newComment = $('<div class="commentBlock">\n' +
                     '                <div class="commentContent">' + json.content + ' </div>\n' +
                     '                <div class="commentInfo">\n' +
                     '                    <div class="commentName">Post by:\n' +
-                    json.username + '</a>\n' +
+                    '<a>' + json.username + '</a>' +
                     '                    </div>\n' +
                     '                    <div class="commentTime"> Just Now</div>\n' +
                     '\n' +
@@ -80,7 +80,13 @@ $(document).ready(function () {
                     '                        <input type = "button" class="deleteComment" value = "delete">\n' +
                     '                    </form>\n' +
                     '                    </div>\n')
-                $(newComment).appendTo(newCommentPlace);
+                 $(newComment).appendTo(newCommentPlace);
+                if($(".noComment").show()){
+                    $('.noComment').hide()
+                }
+                if(edit_or_add === "edit")
+                  //  var comment_id =  $(this).parent().siblings('.commentBlock').children('.input[value=' + json.comment_id + ']')
+                    $(this).parent().siblings('.commentBlock').children('input[value=' + json.comment_id + ']').parent().replaceWith(newComment);
             })
             .fail(function (xhr, status, errorThrown) {
                 alert("Sorry, there was a problem!");
@@ -89,15 +95,14 @@ $(document).ready(function () {
                 console.dir(xhr);
             })
     });
-
-    //edit a comment
-
-
-
-
-
-
-
+    //
+  // $('.editButton').click(function () {
+  //       var comment_id = $(this).attr('data-comment-id');
+  //       var comment_content =  $(this).attr('data-comment-content');
+  //       console.log(comment_content)
+  //       $('.textEditor').val(comment_content)
+  //       // $('.titleTextArea').text("Edit your comment for this Event")
+  // });
 
 
     //delete a comment

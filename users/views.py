@@ -142,12 +142,14 @@ def edit_comment(request, comment_id):
             comment.save()
             messages.add_message(request, messages.INFO, "You successfully edit the comment")
             return JsonResponse(
-                {'success': 'success', 'content': comment.content, 'username': comment.author.username,
+                {'success': 'success', 'comment_id': comment.id, 'content': comment.content,
+                 'username': comment.author.username,
                  'time': comment.time},
                 status=200)
         except Comment.DoesNotExist:
             return JsonResponse({'error': 'No Comment found with that id.'}, status=200)
     else:
+        # return JsonResponse({'error': 'Invalid Ajax Request'}, status=400)
         comment = Comment.objects.get(pk=comment_id)
         event = comment.event
         comments = fetch_comment_for_an_event(event.id)

@@ -171,6 +171,10 @@ div.commentButtons {
     justify-content: space-between;
      flex: 0 50%;
 }
+button.edit{
+    margin-right: 25px;
+}
+
 
 p {
     font-size: small;
